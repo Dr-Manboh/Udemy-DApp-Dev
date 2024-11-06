@@ -35,7 +35,7 @@ export default function Home() {
       });
       console.log(`chain: ${chain}`);
 
-      if (chain != 0xaa36a7) {
+      if (chain !=  0xaa36a7) {
         alert('sepoliaに接続してください！');
         return
       } else {
@@ -50,11 +50,24 @@ export default function Home() {
       const accounts = await ethereum.request({
         method: 'eth_requestAccounts'
       });
-      console.log('account: ${accounts[0]}')
-      setAccount(account[0])
+      console.log(`account: ${accounts[0]}`)
+      setAccount(accounts[0])
+
+      ethereum.on('accountsChanged', checkAccountChanged);
+      ethereum.on('chainChanged', checkChainId);
     } catch (err) {
       console.log(err)
     }
+  }
+
+  const checkAccountChanged = () => {
+    setAccount('');
+    setNftOwner(false);
+    setItems([]);
+    setTokenBalance('');
+    setBankBalance('');
+    setBankTotalDeposit('');
+    setInputData({ transferAddress: '', transferAmount: '', depositAmount: '', withdrawAmount: '' });
   }
 
   useEffect(() => {
